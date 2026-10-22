@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://akshat02014.github.io/Gyaan/sitemap.xml
