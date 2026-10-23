@@ -1,0 +1,1088 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gyaan Search Engine - AI search, study notes and tests | Founded by Akshat Patel</title>
+<meta name="description" content="Gyaan is a search engine and AI study tool founded by Akshat Patel. Search, make study notes, tests and images.">
+<meta name="author" content="Akshat Patel">
+<link rel="icon" type="image/svg+xml" href="logo.svg">
+<link rel="canonical" href="https://akshat02014.github.io/Gyaan/">
+<meta property="og:title" content="Gyaan Search Engine - founded by Akshat Patel">
+<meta property="og:description" content="Gyaan is a search engine and AI study tool founded by Akshat Patel.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://akshat02014.github.io/Gyaan/">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[
+{"@type":"WebSite","name":"Gyaan","alternateName":["Gyaan Search Engine","Gyan Search Engine"],"url":"https://akshat02014.github.io/Gyaan/","description":"Gyaan is a search engine and AI study tool founded by Akshat Patel.","author":{"@id":"https://akshat02014.github.io/Gyaan/#akshat"}},
+{"@type":"Organization","name":"Gyaan","url":"https://akshat02014.github.io/Gyaan/","founder":{"@id":"https://akshat02014.github.io/Gyaan/#akshat"}},
+{"@type":"Person","@id":"https://akshat02014.github.io/Gyaan/#akshat","name":"Akshat Patel","jobTitle":"Founder of Gyaan Search Engine","sameAs":["https://github.com/Akshat02014"]}
+]}
+</script>
+<style>
+:root{--bg:#fff;--fg:#202124;--mute:#5f6368;--line:#dadce0;--chip:#f1f3f4;--blue:#1a73e8}
+@media (prefers-color-scheme:dark){:root{--bg:#202124;--fg:#e8eaed;--mute:#9aa0a6;--line:#5f6368;--chip:#303134;--blue:#8ab4f8}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.55 system-ui,-apple-system,Roboto,sans-serif;padding:env(safe-area-inset-top) 16px 40px}
+main{max-width:640px;margin:0 auto}
+header{text-align:center;margin:48px 0 20px;transition:margin .2s}
+body.has .logo{font-size:28px}
+body.has header{margin:20px 0 12px}
+.logo{font-size:44px;font-weight:600;letter-spacing:-1px}
+.logo span:nth-child(1){color:#4285f4}.logo span:nth-child(2){color:#ea4335}.logo span:nth-child(3){color:#fbbc05}
+.logo span:nth-child(4){color:#34a853}.logo span:nth-child(5){color:#ea4335}
+.box{display:flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:28px;padding:6px 8px 6px 16px;background:var(--bg)}
+.box:focus-within{box-shadow:0 1px 6px rgba(32,33,36,.28)}
+.box input[type=text]{flex:1;min-width:0;border:0;outline:0;background:none;color:var(--fg);font:inherit;padding:8px 0}
+button{font:inherit;color:inherit;cursor:pointer}
+.icon{border:0;background:none;width:40px;height:40px;border-radius:50%;font-size:20px}
+.icon:active,.icon:hover{background:var(--chip)}
+.go{border:0;background:var(--blue);color:#fff;border-radius:20px;padding:8px 16px;font-weight:500}
+body:not(.dark) .go{color:#fff}
+.modes{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:14px 0}
+.mode{border:1px solid var(--line);background:none;border-radius:16px;padding:6px 16px}
+.mode.on{background:var(--chip);border-color:var(--blue);color:var(--blue);font-weight:500}
+#preview{display:none;margin:12px 0;align-items:center;gap:10px}
+#preview img{height:64px;border-radius:8px;border:1px solid var(--line)}
+#keybox{display:none;margin:12px 0}
+#keybox input{width:100%;border:1px solid var(--line);border-radius:8px;padding:10px;background:var(--bg);color:var(--fg);font:inherit}
+#keybox p{color:var(--mute);font-size:14px;margin:6px 0 0}
+#out{margin-top:20px}
+.ans{white-space:pre-wrap;overflow-wrap:anywhere}
+.ans li{margin-left:18px}
+.out img{max-width:100%;border-radius:12px;margin-top:8px}
+.src{margin-top:20px;border-top:1px solid var(--line);padding-top:12px}
+.src h2{font-size:15px;font-weight:600;margin:0 0 8px}
+.src a{display:block;color:var(--blue);text-decoration:none;padding:6px 0;overflow-wrap:anywhere}
+.msg{color:var(--mute)}
+.err{color:#d93025}
+#testopts{display:none;flex-wrap:wrap;gap:10px;justify-content:center;margin:0 0 12px}
+#testopts #mins{width:150px}
+#timer{position:sticky;top:0;background:var(--bg);padding:8px 0;font-weight:600;font-size:18px;z-index:1}
+#testopts input{width:110px;border:1px solid var(--line);border-radius:8px;padding:8px;background:var(--bg);color:var(--fg);font:inherit}
+#imgopts{display:none;justify-content:center;margin:0 0 12px}
+#imgopts select,#testopts select{border:1px solid var(--line);border-radius:8px;padding:8px;background:var(--bg);color:var(--fg);font:inherit}
+.q{margin:18px 0}
+.q p{margin:0 0 8px}
+.opt{display:block;width:100%;text-align:left;border:1px solid var(--line);background:none;border-radius:10px;padding:10px 12px;margin:6px 0}
+.opt.sel{border-color:var(--blue);background:var(--chip)}
+.opt.ok{border-color:#188038;background:rgba(24,128,56,.18)}
+.opt.bad{border-color:#d93025;background:rgba(217,48,37,.18)}
+.why{color:var(--mute);font-size:14px}
+#testopts input,.fillin{min-width:0}
+.fillin{width:100%;border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:var(--bg);color:var(--fg);font:inherit}
+.fillin.ok{border-color:#188038;background:rgba(24,128,56,.18)}
+.fillin.bad{border-color:#d93025;background:rgba(217,48,37,.18)}
+.pics{display:flex;gap:8px;overflow-x:auto;margin-bottom:14px}
+.pics a{flex:0 0 auto;width:140px;color:var(--mute);font-size:12px;text-decoration:none;line-height:1.3}
+.pics img{width:140px;height:100px;object-fit:cover;border-radius:10px;display:block;margin-bottom:4px}
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);margin-bottom:14px}
+.tab{border:0;background:none;padding:8px 14px;border-bottom:3px solid transparent;color:var(--mute)}
+.tab.on{color:var(--blue);border-bottom-color:var(--blue);font-weight:500}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.grid img{width:100%;height:140px;object-fit:cover;border-radius:10px;display:block}
+.about{max-width:560px;margin:40px auto 0;display:flex;gap:14px;align-items:center;border:1px solid var(--line);border-radius:14px;padding:14px;background:var(--chip)}
+.about img{width:64px;height:64px;border-radius:50%;flex:none}
+.about h2{margin:0 0 2px;font-size:16px}.about p{margin:0;color:var(--mute);font-size:14px}
+footer{margin-top:48px;text-align:center;color:var(--mute);font-size:13px}
+#sugg{display:none;border:1px solid var(--line);border-radius:12px;margin-top:6px;background:var(--bg);overflow:hidden}
+#sugg button{display:block;width:100%;text-align:left;border:0;background:none;padding:10px 16px}
+#sugg button:active{background:var(--chip)}
+#sugg .clr{color:var(--mute);font-size:13px;border-top:1px solid var(--line)}
+.board{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-width:300px;margin:12px 0}
+.board4{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;max-width:340px;margin:12px 0}
+.cell{aspect-ratio:1;font-size:32px;border:1px solid var(--line);border-radius:12px;background:var(--chip)}
+.cell:active{border-color:var(--blue)}
+.keys{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin:10px 0}
+.keys .mode{padding:8px 0}
+.gl{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.gl .opt{margin:0}
+.codebox{position:relative;margin:10px 0}
+.codebox pre{-webkit-user-select:text;user-select:text;background:var(--chip);border-radius:10px;padding:12px;overflow-x:auto;font:13px/1.45 ui-monospace,monospace;margin:0}
+.cp{position:absolute;top:6px;right:6px;padding:2px 10px;font-size:13px}
+#codeopts{display:none;flex-wrap:wrap;gap:8px;justify-content:center;margin:0 0 12px}
+#codeopts select{border:1px solid var(--line);border-radius:8px;padding:8px;background:var(--bg);color:var(--fg);font:inherit}
+#ov{display:none;position:fixed;inset:0;z-index:50;background:var(--bg);color:var(--fg);padding:calc(env(safe-area-inset-top,0px) + 12px) 16px 16px;overflow-y:auto}
+.ovh{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.ans code{background:var(--chip);padding:1px 5px;border-radius:4px;font-size:.92em}
+#score{font-size:20px;font-weight:600}
+</style>
+</head>
+<body>
+<main>
+<header><div class="logo" aria-label="Gyaan"><span>G</span><span>y</span><span>a</span><span>a</span><span>n</span></div></header>
+
+<div class="box">
+  <input id="q" type="text" placeholder="Ask anything" enterkeyhint="search" autocomplete="off">
+  <button class="icon" id="cam" title="Add a photo" aria-label="Add a photo">📷</button>
+  <button class="go" id="go">Search</button>
+</div>
+<div id="sugg"></div>
+<input id="file" type="file" accept="image/*" hidden>
+
+<div class="modes">
+  <button class="mode on" id="mSearch">Search</button>
+  <button class="mode" id="mImage">Make an image</button>
+  <button class="mode" id="mTest">Make a test</button>
+  <button class="mode" id="mNotes">Study notes</button>
+  <button class="mode" id="mCode">Code</button>
+  <button class="mode" id="mHist">My scores</button>
+  <button class="mode" id="mGames">Games</button>
+</div>
+
+<div id="testopts">
+  <select id="cls" aria-label="Class"><option>Nursery</option><option>LKG</option><option>UKG</option><option>Class 1</option><option>Class 2</option><option>Class 3</option><option>Class 4</option><option>Class 5</option><option>Class 6</option><option>Class 7</option><option selected>Class 8</option><option>Class 9</option><option>Class 10</option><option>Plus One (Class 11)</option><option>Plus Two (Class 12)</option></select>
+  <select id="qtype" aria-label="Question type"><option value="mcq" selected>Multiple choice</option><option value="tf">True or false</option><option value="fill">Fill in the blanks</option><option value="short">Short answer</option><option value="mixed">Mixed</option></select>
+  <input id="mins" type="number" inputmode="numeric" min="1" max="180" aria-label="Minutes" placeholder="Minutes (optional)">
+  <input id="num" type="number" inputmode="numeric" min="1" max="100" value="10" aria-label="Number of questions" placeholder="How many?">
+</div>
+
+<div id="codeopts"><select id="codelang" aria-label="Language"><option>Python</option><option>JavaScript</option><option>HTML and CSS</option><option>Java</option><option>C++</option><option>C</option><option>Kotlin</option><option>PHP</option><option>SQL</option><option>Arduino (C++)</option><option>Any language</option></select> <select id="codedev" aria-label="Your device"><option>Android phone</option><option>iPhone</option><option>Laptop or computer</option></select> <select id="codeapp" aria-label="Where you will run it"></select>
+  <div style="width:100%;display:flex;gap:8px;justify-content:center;flex-wrap:wrap"><button class="mode" id="cfBtn">📎 Upload code file</button><button class="mode" id="cpBtn">📋 Paste code</button></div>
+  <span class="msg" id="cchip" style="width:100%;text-align:center"></span>
+  <textarea id="codepaste" rows="7" placeholder="Paste your code here" style="display:none;width:100%;font:13px/1.45 ui-monospace,monospace;border:1px solid var(--line);border-radius:10px;padding:10px;background:var(--bg);color:var(--fg)"></textarea>
+  <input id="codefile" type="file" hidden accept="text/*,.py,.js,.ino,.cpp,.c,.h,.java,.kt,.php,.sql,.html,.css,.json,.txt">
+</div>
+
+<div id="imgopts">
+  <select id="isvc" aria-label="Image service"><option value="auto">Auto (Gemini, then free)</option><option value="puter">Puter (free account)</option></select>
+</div>
+
+<div id="preview"><img id="pimg" alt="Selected photo"><button class="icon" id="rm" aria-label="Remove photo">✕</button></div>
+
+
+<div id="out" class="out"></div>
+<section class="about" id="about">
+  <img src="avatar.svg" alt="Illustration of Akshat Patel, founder of Gyaan" width="64" height="64">
+  <div><h2>About Gyaan</h2><p>Gyaan is a search engine and study helper created and founded by <strong>Akshat Patel</strong>.</p></div>
+</section>
+<footer>Gyaan Search Engine was created and founded by <strong>Akshat Patel</strong>.</footer>
+</main>
+
+<div id="ov"><div class="ovh"><b id="ovp"></b><button class="mode" id="ovx">Close</button></div><div id="ovg"></div></div>
+<script>
+const $ = id => document.getElementById(id);
+let mode = 'search', img = null;
+const TEXT_MODELS = ['gemini-3.8-flash', 'gemini-3.6-flash'], IMG_MODELS = ['gemini-nano-banana-2.1', 'gemini-2.5-flash-image'];
+
+const API = 'https://gyaan-api.gitasinha419.workers.dev/';
+$('cam').onclick = () => $('file').click();
+$('rm').onclick = () => { img = null; $('preview').style.display = 'none'; $('file').value = ''; };
+
+$('file').onchange = e => {
+  const f = e.target.files[0]; if (!f) return;
+  const r = new FileReader();
+  r.onload = () => {
+    const url = r.result;
+    img = { mime: f.type || 'image/jpeg', data: url.split(',')[1] };
+    $('pimg').src = url; $('preview').style.display = 'flex';
+  };
+  r.readAsDataURL(f);
+};
+
+function setMode(m) {
+  mode = m;
+  $('mSearch').classList.toggle('on', m === 'search');
+  $('mImage').classList.toggle('on', m === 'image');
+  $('mTest').classList.toggle('on', m === 'test');
+  $('mNotes').classList.toggle('on', m === 'notes');
+  $('mCode').classList.toggle('on', m === 'code');
+  $('codeopts').style.display = m === 'code' ? 'flex' : 'none';
+  $('testopts').style.display = (m === 'test' || m === 'notes') ? 'flex' : 'none';
+  $('imgopts').style.display = m === 'image' ? 'flex' : 'none';
+  $('qtype').style.display = $('num').style.display = $('mins').style.display = m === 'test' ? '' : 'none';
+  $('q').placeholder = m === 'search' ? 'Ask anything' : m === 'image' ? 'Describe the image you want' : m === 'test' ? 'Subject or chapter, e.g. Fractions' : m === 'code' ? (codeHist.length ? 'Reply, paste an error, or tap Next step' : 'Describe the code you want') : 'Chapter or topic, e.g. Photosynthesis';
+  $('go').textContent = m === 'search' ? 'Search' : m === 'image' ? 'Create' : m === 'test' ? 'Start test' : m === 'code' ? 'Get code' : 'Make notes';
+}
+$('mSearch').onclick = () => setMode('search');
+$('mImage').onclick = () => setMode('image');
+$('mTest').onclick = () => setMode('test');
+$('mNotes').onclick = () => setMode('notes');
+$('mCode').onclick = () => setMode('code');
+$('ovx').onclick = closeOv;
+$('cfBtn').onclick = () => $('codefile').click();
+$('cpBtn').onclick = () => { const t = $('codepaste'); t.style.display = t.style.display === 'none' ? 'block' : 'none'; if (t.style.display === 'block') t.focus(); };
+$('codefile').onchange = e => {
+  const f = e.target.files[0]; if (!f) return;
+  if (f.size > 100000) { $('cchip').textContent = 'That file is too big. The maximum is 100 KB.'; e.target.value = ''; return; }
+  const r = new FileReader();
+  r.onload = () => { codeFile = { name: f.name, text: String(r.result) }; $('cchip').textContent = 'File added: ' + f.name + '. Tap Get code to check it.'; };
+  r.readAsText(f); e.target.value = '';
+};
+(() => { const u = navigator.userAgent; $('codedev').value = /iPhone|iPad/i.test(u) ? 'iPhone' : /Android/i.test(u) ? 'Android phone' : 'Laptop or computer'; fillApps(); })();
+$('codedev').onchange = fillApps;
+$('isvc').onchange = () => { if ($('isvc').value === 'puter') loadPuter().catch(() => {}); };
+$('mHist').onclick = () => showHist();
+$('mGames').onclick = () => showGames();
+$('q').addEventListener('keydown', e => { if (e.key === 'Enter') run(); });
+$('go').onclick = run;
+$('q').addEventListener('input', renderSugg);
+$('q').addEventListener('focus', renderSugg);
+$('q').addEventListener('blur', () => setTimeout(() => { $('sugg').style.display = 'none'; }, 150));
+
+function esc(s) { return s.replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c])); }
+function plain(s) {
+  s = String(s);
+  const B = '\\\\{1,2}';
+  const sup = { 0: '⁰', 1: '¹', 2: '²', 3: '³', 4: '⁴', 5: '⁵', 6: '⁶', 7: '⁷', 8: '⁸', 9: '⁹', '-': '⁻', '+': '⁺', n: 'ⁿ' };
+  const toSup = t => t.split('').every(c => sup[c]) ? t.split('').map(c => sup[c]).join('') : '^(' + t + ')';
+  const wrap = t => /^[A-Za-z0-9.\-]+$/.test(t) ? t : '(' + t + ')';
+  s = s.replace(new RegExp(B + '[\\(\\[]|' + B + '[\\)\\]]', 'g'), '').replace(/\$\$?/g, '');
+  for (let i = 0; i < 6; i++) {
+    s = s.replace(new RegExp(B + '[dt]?frac\\s*\\{([^{}]*)\\}\\s*\\{([^{}]*)\\}', 'g'), (m, a, b) => wrap(a.trim()) + '/' + wrap(b.trim()));
+    s = s.replace(new RegExp(B + 'sqrt\\s*\\{([^{}]*)\\}', 'g'), (m, a) => '√' + wrap(a.trim()));
+    s = s.replace(new RegExp(B + 'text(?:bf|rm)?\\s*\\{([^{}]*)\\}', 'g'), '$1');
+    s = s.replace(/\^\{([^{}]*)\}/g, (m, a) => toSup(a)).replace(/_\{([^{}]*)\}/g, '_$1');
+  }
+  s = s.replace(new RegExp('\\^\\s*\\{?' + B + 'circ\\}?', 'g'), '°');
+  s = s.replace(/\^([0-9])/g, (m, a) => sup[a]);
+  const sym = { times: '×', div: '÷', cdot: '·', pm: '±', leq: '≤', le: '≤', geq: '≥', ge: '≥', neq: '≠', approx: '≈', pi: 'π', degree: '°', circ: '°', infty: '∞', theta: 'θ', alpha: 'α', beta: 'β', rightarrow: '→', to: '→', angle: '∠', triangle: '△' };
+  s = s.replace(new RegExp(B + '([A-Za-z]+)', 'g'), (m, w) => w in sym ? sym[w] : (/^(left|right|displaystyle|quad|qquad|mathrm|mathbf)$/.test(w) ? '' : w));
+  s = s.replace(new RegExp(B + '%', 'g'), '%').replace(new RegExp(B + '[,;:! ]', 'g'), ' ').replace(/[{}]/g, '');
+  return s;
+}
+function md(s) {
+  return esc(plain(s)).replace(/^#{1,4}\s*(.+)$/gm, '<b>$1</b>').replace(/\*\*(.+?)\*\*/g, '<b>$1</b>').replace(/`([^`\n]+)`/g, '<code>$1</code>').replace(/^[*-] (.+)$/gm, '<li>$1</li>').replace(/<\/li>\n/g, '</li>');
+}
+
+async function call(model, body) {
+  const res = await fetch(API + '?model=' + encodeURIComponent(model), {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body)
+  });
+  const j = await res.json();
+  if (!res.ok) throw new Error((j.error && j.error.message) || 'Request failed');
+  return j;
+}
+
+function loadPuter() {
+  return new Promise((res, rej) => {
+    if (window.puter) return res();
+    const sc = document.createElement('script');
+    sc.src = 'https://js.puter.com/v2/';
+    sc.onload = res;
+    sc.onerror = () => rej(new Error('Could not load Puter. Check your internet and try again.'));
+    document.head.appendChild(sc);
+  });
+}
+async function puterImage(q, rid) {
+  const out = $('out');
+  if (!q) { out.innerHTML = '<p class="err">Type what you want to see first.</p>'; return; }
+  out.innerHTML = '<p class="msg">Opening Puter. If a sign-in window appears, log in or create a free account…</p>';
+  try {
+    if (!window.puter) await loadPuter();
+    if (puter.auth && !puter.auth.isSignedIn()) await puter.auth.signIn();
+    let im = null, lastErr;
+    for (const opt of [{ model: 'gpt-image-1' }, { model: 'dall-e-3' }, null]) {
+      try { im = opt ? await puter.ai.txt2img(q, opt) : await puter.ai.txt2img(q); break; } catch (e) { lastErr = e; }
+    }
+    if (!im) throw lastErr || new Error('No image came back.');
+    if (rid !== runId) return;
+    out.innerHTML = '<p class="msg">Made with Puter.</p>';
+    im.style.maxWidth = '100%'; im.style.borderRadius = '12px'; im.alt = 'Generated image';
+    out.appendChild(im);
+    addRetry(0);
+  } catch (e) {
+    let m = '';
+    try {
+      m = e && (e.message || (e.error && (e.error.message || (typeof e.error === 'string' ? e.error : ''))) || (typeof e === 'string' ? e : ''));
+      if (!m && e) m = JSON.stringify(e).slice(0, 250);
+    } catch (x) {}
+    out.innerHTML = '<p class="err">' + esc(m || 'Puter could not make the image. Try again, or switch to Auto.') + '</p>';
+  }
+}
+let codeFile = null, codeHist = [], tmr, runId = 0, imgCache = { q: '', better: '' };
+function addRetry(cool) {
+  const b = document.createElement('button');
+  b.className = 'mode'; b.style.marginTop = '12px';
+  $('out').appendChild(b);
+  let left = cool;
+  const tick = () => {
+    if (!b.isConnected) return;
+    if (left > 0) { b.disabled = true; b.textContent = 'Try again in ' + left + 's'; left--; setTimeout(tick, 1000); }
+    else { b.disabled = false; b.textContent = 'Try again'; }
+  };
+  b.onclick = run; tick();
+}
+async function commonsImages(q) {
+  try {
+    const u = 'https://commons.wikimedia.org/w/api.php?action=query&format=json&origin=*&generator=search&gsrnamespace=6&gsrlimit=30&prop=imageinfo&iiprop=url|mime&iiurlwidth=300&gsrsearch=' + encodeURIComponent(q);
+    const d = await (await fetch(u)).json();
+    const pages = d.query && d.query.pages ? Object.values(d.query.pages) : [];
+    return pages.filter(p => p.imageinfo && p.imageinfo[0] && p.imageinfo[0].thumburl && /^image\//.test(p.imageinfo[0].mime)).sort((a, b) => a.index - b.index).slice(0, 24);
+  } catch (e) { return null; }
+}
+async function wikiImages(q) {
+  try {
+    const u = 'https://en.wikipedia.org/w/api.php?action=query&format=json&origin=*&generator=search&gsrlimit=8&prop=pageimages&piprop=thumbnail&pithumbsize=300&pilimit=8&gsrsearch=' + encodeURIComponent(q);
+    const d = await (await fetch(u)).json();
+    const pages = d.query && d.query.pages ? Object.values(d.query.pages) : [];
+    return pages.filter(p => p.thumbnail).sort((a, b) => a.index - b.index).slice(0, 4);
+  } catch (e) { return []; }
+}
+async function freeImage(q, rid) {
+  const out = $('out');
+  out.innerHTML = '<p class="msg">Improving your description…</p>';
+  let better = q, skip = '';
+  if (imgCache.q === q && imgCache.better) better = imgCache.better; else try {
+    const j = await callText({ contents: [{ parts: [{ text: 'Rewrite this image idea as one detailed English prompt for an AI image generator, under 60 words. Replace feelings and actions with concrete visible details (for example, crying becomes tears running down the face, wet eyes, a sad expression). Keep the main subject exactly as the person meant it, and add a style such as realistic photo if none is given. Reply with only the prompt. Idea: ' + q }] }] });
+    const c = j.candidates && j.candidates[0];
+    const t = c && c.content && c.content.parts ? c.content.parts.map(p => p.text || '').join('').trim() : '';
+    if (t) { better = t.slice(0, 500); imgCache = { q, better }; } else skip = 'Gemini sent back nothing';
+  } catch (e) {
+    skip = /quota/i.test(e.message) ? 'your free Gemini limit for today is used up' : /high demand|overloaded/i.test(e.message) ? 'Gemini is busy' : e.message.slice(0, 120);
+  }
+  if (rid !== runId) return;
+  const url = 'https://image.pollinations.ai/prompt/' + encodeURIComponent(better) + '?width=768&height=768&nologo=true&seed=' + Math.floor(Math.random() * 1e6);
+  out.innerHTML = '<p class="msg" id="fl">Creating your image with a free service. This can take up to a minute…</p><p class="msg" id="fp"></p><img alt="Generated image" style="display:none">';
+  $('fp').textContent = (skip ? 'Prompt not improved because ' + skip + '. ' : '') + 'Prompt used: ' + better;
+  const im = out.querySelector('img');
+  im.onload = () => { $('fl').textContent = 'Made with a free service, so quality and speed can vary.'; im.style.display = 'block'; addRetry(15); };
+  im.onerror = () => { $('fl').className = 'err'; $('fl').textContent = 'The free image service is busy or down. Wait a few seconds and try again.'; addRetry(15); };
+  im.src = url;
+}
+let gameId = 0, LV = 1;
+try { const l = parseInt(localStorage.getItem('glevel'), 10); if (l >= 0 && l <= 2) LV = l; } catch (e) {}
+const GAMES = [['ttt', '⭕ Tic-Tac-Toe'], ['mem', '🧠 Memory match'], ['guess', '🔢 Guess the number'], ['rps', '✊ Rock, paper, scissors'], ['snake', '🐍 Snake'], ['g2048', '🟧 2048'], ['hang', '🔤 Hangman'], ['dino', '🦖 Dino runner'], ['math', '➕ Math quiz'], ['mole', '🔨 Whack-a-mole'], ['simon', '🎨 Simon says'], ['slide', '🧩 Sliding puzzle'], ['scramble', '🔀 Word scramble'], ['react', '⚡ Reaction test']];
+function ctl() { return '<div style="margin-top:12px"><button class="mode" id="again">Play again</button> <button class="mode" id="gback">All games</button></div>'; }
+function bindCtl(fn) { $('again').onclick = fn; $('gback').onclick = showGames; }
+function showGames() {
+  clearInterval(tmr); runId++; gameId++; window.onkeydown = window.onkeyup = null;
+  document.body.classList.add('has');
+  const out = $('out');
+  out.innerHTML = '<h2 style="font-size:18px;margin:0 0 8px">Games</h2><div class="modes" style="justify-content:flex-start;margin:0 0 10px"><span class="msg" style="align-self:center">Level:</span>' + ['Easy', 'Medium', 'Hard'].map((n, i) => '<button class="mode' + (LV === i ? ' on' : '') + '" data-l="' + i + '">' + n + '</button>').join('') + '</div><div class="gl">' + GAMES.map(g => '<button class="opt" data-g="' + g[0] + '">' + g[1] + '</button>').join('') + '</div>' +
+    '<p class="msg">To open a game website, type its name in Search, like chess, poki or 2048.</p>';
+  const fns = { ttt: tttMenu, mem: memGame, guess: guessGame, rps: rpsGame, snake: snakeGame, g2048: g2048, hang: hangGame, dino: dinoGame, math: mathGame, mole: moleGame, simon: simonGame, slide: slideGame, scramble: scrambleGame, react: reactGame };
+  out.querySelectorAll('[data-l]').forEach(b => b.onclick = () => { LV = +b.dataset.l; try { localStorage.setItem('glevel', String(LV)); } catch (e) {} showGames(); });
+  out.querySelectorAll('.opt').forEach(b => b.onclick = () => fns[b.dataset.g]());
+}
+function memGame() {
+  const out = $('out'), gid = ++gameId, em = ['🐯', '🐘', '🦁', '🐼', '🐸', '🦊', '🐵', '🐙', '🐧', '🦉'];
+  const P = [6, 8, 10][LV], cards = [...em.slice(0, P), ...em.slice(0, P)].sort(() => Math.random() - 0.5);
+  let open = [], done = new Set(), moves = 0, lock = false;
+  const draw = () => {
+    if (gid !== gameId) return;
+    out.innerHTML = '<p class="msg">Moves: ' + moves + (done.size === 2 * P ? '. You won! 🎉' : '') + '</p><div class="board4">' +
+      cards.map((c, i) => '<button class="cell" data-i="' + i + '">' + (open.includes(i) || done.has(i) ? c : '❓') + '</button>').join('') + '</div>' + ctl();
+    out.querySelectorAll('.cell').forEach(c => c.onclick = () => flip(+c.dataset.i));
+    bindCtl(memGame);
+  };
+  const flip = i => {
+    if (lock || open.includes(i) || done.has(i)) return;
+    open.push(i);
+    if (open.length === 2) {
+      moves++; draw(); lock = true;
+      setTimeout(() => { if (cards[open[0]] === cards[open[1]]) { done.add(open[0]); done.add(open[1]); } open = []; lock = false; draw(); }, 700);
+    } else draw();
+  };
+  draw();
+}
+function guessGame() {
+  const out = $('out'); gameId++;
+  const MAX = [10, 100, 1000][LV], n = 1 + Math.floor(Math.random() * MAX);
+  let tries = 0, over = false;
+  const draw = msg => {
+    out.innerHTML = '<p class="msg">I am thinking of a number from 1 to ' + MAX + '.</p><p><b>' + msg + '</b></p>' +
+      (over ? '' : '<div class="box" style="max-width:300px"><input id="gv" type="number" inputmode="numeric" placeholder="Your guess" style="flex:1;min-width:0;border:0;outline:0;background:none;color:var(--fg);font:inherit;padding:8px 0"><button class="go" id="gg">Guess</button></div>') + ctl();
+    bindCtl(guessGame);
+    if (!over) { $('gg').onclick = guess; $('gv').addEventListener('keydown', e => { if (e.key === 'Enter') guess(); }); }
+  };
+  const guess = () => {
+    const v = parseInt($('gv').value, 10);
+    if (!(v >= 1 && v <= MAX)) { draw('Enter a number from 1 to ' + MAX + '.'); return; }
+    tries++;
+    if (v === n) { over = true; draw('Correct! You got it in ' + tries + (tries === 1 ? ' try' : ' tries') + '. 🎉'); }
+    else draw((v < n ? 'Too low' : 'Too high') + '. Tries: ' + tries);
+  };
+  draw('Take a guess.');
+}
+function rpsGame() {
+  const out = $('out'); gameId++;
+  const E = { rock: '✊', paper: '✋', scissors: '✌️' }, ks = Object.keys(E);
+  let you = 0, cpu = 0, msg = 'Choose one.';
+  const draw = () => {
+    out.innerHTML = '<p class="msg">You ' + you + ' : ' + cpu + ' Computer</p><p><b>' + msg + '</b></p><div class="board">' +
+      ks.map(k => '<button class="cell" data-k="' + k + '">' + E[k] + '</button>').join('') + '</div>' + ctl();
+    out.querySelectorAll('.cell').forEach(c => c.onclick = () => {
+      const k = c.dataset.k, o = ks[Math.floor(Math.random() * 3)];
+      if (k === o) msg = E[k] + ' vs ' + E[o] + '. Tie.';
+      else if ((k === 'rock' && o === 'scissors') || (k === 'paper' && o === 'rock') || (k === 'scissors' && o === 'paper')) { you++; msg = E[k] + ' beats ' + E[o] + '. You win!'; }
+      else { cpu++; msg = E[o] + ' beats ' + E[k] + '. The computer wins.'; }
+      draw();
+    });
+    bindCtl(() => { you = 0; cpu = 0; msg = 'Choose one.'; draw(); });
+  };
+  draw();
+}
+function tttMenu() {
+  gameId++;
+  $('out').innerHTML = '<h2 style="font-size:18px;margin:0 0 8px">Tic-Tac-Toe</h2><button class="opt" id="p1">1 player (play the computer)</button><button class="opt" id="p2">2 players (computer does not play)</button><div style="margin-top:12px"><button class="mode" id="gback">All games</button></div>';
+  $('p1').onclick = () => tttGame(1); $('p2').onclick = () => tttGame(2); $('gback').onclick = showGames;
+}
+function tttGame(players) {
+  const out = $('out'); gameId++;
+  let b = Array(9).fill(''), over = false, turn = 'X';
+  const L = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]];
+  const won = p => L.some(l => l.every(i => b[i] === p));
+  const need = p => { for (const l of L) { const v = l.map(i => b[i]); if (v.filter(x => x === p).length === 2 && v.includes('')) return l[v.indexOf('')]; } return -1; };
+  const draw = msg => {
+    out.innerHTML = '<p class="msg">' + msg + '</p><div class="board">' + b.map((c, i) => '<button class="cell" data-i="' + i + '">' + c + '</button>').join('') + '</div>' + ctl();
+    out.querySelectorAll('.cell').forEach(c => c.onclick = () => play(+c.dataset.i));
+    bindCtl(() => tttGame(players));
+  };
+  const play = i => {
+    if (over || b[i]) return;
+    b[i] = turn;
+    if (won(turn)) { over = true; return draw(players === 2 ? turn + ' wins! 🎉' : turn === 'X' ? 'You win! 🎉' : 'The computer wins.'); }
+    if (!b.includes('')) { over = true; return draw('It’s a draw.'); }
+    if (players === 2) { turn = turn === 'X' ? 'O' : 'X'; return draw(turn + '’s turn'); }
+    let m = LV ? need('O') : -1; if (m < 0 && LV) m = need('X'); if (m < 0 && LV && !b[4]) m = 4;
+    if (m < 0) { const f = b.map((c, k) => c ? -1 : k).filter(k => k >= 0); m = f[Math.floor(Math.random() * f.length)]; }
+    b[m] = 'O';
+    if (won('O')) { over = true; return draw('The computer wins.'); }
+    if (!b.includes('')) { over = true; return draw('It’s a draw.'); }
+    draw('Your turn. You are X.');
+  };
+  draw(players === 2 ? 'X’s turn' : 'Your turn. You are X.');
+}
+function swipe(el, cb, once) {
+  let sx = 0, sy = 0;
+  const dirOf = (x, y) => { const dx = x - sx, dy = y - sy; return Math.max(Math.abs(dx), Math.abs(dy)) > 18 ? (Math.abs(dx) > Math.abs(dy) ? (dx > 0 ? 'R' : 'L') : (dy > 0 ? 'D' : 'U')) : null; };
+  el.addEventListener('touchstart', e => { sx = e.touches[0].clientX; sy = e.touches[0].clientY; }, { passive: true });
+  el.addEventListener('touchmove', e => {
+    e.preventDefault();
+    if (once) return;
+    const x = e.touches[0].clientX, y = e.touches[0].clientY, k = dirOf(x, y);
+    if (k) { cb(k); sx = x; sy = y; }
+  }, { passive: false });
+  if (once) el.addEventListener('touchend', e => { const k = dirOf(e.changedTouches[0].clientX, e.changedTouches[0].clientY); if (k) cb(k); });
+}
+function snakeGame() {
+  const out = $('out'), gid = ++gameId; clearInterval(tmr);
+  out.innerHTML = '<p class="msg" id="ss">Score: 0. Swipe to turn. Walls are open, you only lose by biting yourself.</p><div id="sw" style="touch-action:none;padding:24px 0"><canvas id="cv" width="300" height="300" style="width:100%;max-width:340px;border:1px solid var(--line);border-radius:12px;display:block;margin:0 auto"></canvas></div>' + ctl();
+  bindCtl(snakeGame);
+  const cx = $('cv').getContext('2d'), N = 15, S = 20, V = { L: [-1, 0], R: [1, 0], U: [0, -1], D: [0, 1] };
+  let sn = [[7, 7], [6, 7]], d = V.R, nd = d, food = [10, 7], score = 0;
+  const put = () => { do { food = [Math.floor(Math.random() * N), Math.floor(Math.random() * N)]; } while (sn.some(s => s[0] === food[0] && s[1] === food[1])); };
+  const dir = k => { const v = V[k]; if (v && (v[0] !== -d[0] || v[1] !== -d[1])) nd = v; };
+  swipe($('sw'), dir);
+  window.onkeydown = e => { const m = { ArrowLeft: 'L', ArrowRight: 'R', ArrowUp: 'U', ArrowDown: 'D' }[e.key]; if (m) { e.preventDefault(); dir(m); } };
+  const paint = () => { cx.fillStyle = '#202124'; cx.fillRect(0, 0, 300, 300); cx.fillStyle = '#ea4335'; cx.fillRect(food[0] * S, food[1] * S, S - 2, S - 2); cx.fillStyle = '#34a853'; sn.forEach(s => cx.fillRect(s[0] * S, s[1] * S, S - 2, S - 2)); };
+  tmr = setInterval(() => {
+    if (gid !== gameId) { clearInterval(tmr); return; }
+    d = nd; const h = [(sn[0][0] + d[0] + N) % N, (sn[0][1] + d[1] + N) % N];
+    if (sn.some(s => s[0] === h[0] && s[1] === h[1])) { clearInterval(tmr); $('ss').textContent = 'Game over. Score: ' + score; return; }
+    sn.unshift(h);
+    if (h[0] === food[0] && h[1] === food[1]) { score++; $('ss').textContent = 'Score: ' + score; put(); } else sn.pop();
+    paint();
+  }, [180, 140, 90][LV]);
+  paint();
+}
+function g2048() {
+  const out = $('out'); gameId++;
+  let g = Array(16).fill(0), score = 0;
+  const add = () => { const e = g.map((v, i) => v ? -1 : i).filter(i => i >= 0); if (e.length) g[e[Math.floor(Math.random() * e.length)]] = Math.random() < 0.9 ? 2 : 4; };
+  const line = a => { const r = a.filter(Boolean); for (let i = 0; i < r.length - 1; i++) if (r[i] === r[i + 1]) { r[i] *= 2; score += r[i]; r.splice(i + 1, 1); } while (r.length < 4) r.push(0); return r; };
+  out.innerHTML = '<p class="msg" id="sc"></p><div id="sw" style="touch-action:none;padding:20px 0"><div class="board4" id="bd"></div></div>' + ctl();
+  bindCtl(g2048);
+  const draw = () => {
+    const over = !g.includes(0) && !g.some((v, i) => (i % 4 < 3 && v === g[i + 1]) || (i < 12 && v === g[i + 4]));
+    $('sc').textContent = 'Score: ' + score + (over ? '. Game over.' : '. Swipe anywhere on the board.');
+    $('bd').innerHTML = g.map(v => '<div class="cell" style="display:flex;align-items:center;justify-content:center;font-size:' + (v >= 1024 ? 18 : v >= 128 ? 22 : 26) + 'px;background:' + (v ? 'hsl(40 ' + Math.min(90, 30 + Math.log2(v) * 6) + '% ' + Math.max(40, 85 - Math.log2(v) * 4) + '%)' : 'var(--chip)') + ';color:' + (v ? '#202124' : 'inherit') + '">' + (v || '') + '</div>').join('');
+  };
+  const move = d => {
+    const old = g.join();
+    for (let k = 0; k < 4; k++) {
+      const idx = [0, 1, 2, 3].map(j => d < 2 ? k * 4 + j : j * 4 + k);
+      if (d === 1 || d === 3) idx.reverse();
+      const r = line(idx.map(i => g[i])); idx.forEach((i, j) => g[i] = r[j]);
+    }
+    if (g.join() !== old) add();
+    draw();
+  };
+  swipe($('sw'), k => move({ L: 0, R: 1, U: 2, D: 3 }[k]), true);
+  window.onkeydown = e => { const m = { ArrowLeft: 0, ArrowRight: 1, ArrowUp: 2, ArrowDown: 3 }[e.key]; if (m !== undefined) { e.preventDefault(); move(m); } };
+  add(); add(); draw();
+}
+function mathGame() {
+  const out = $('out'); gameId++;
+  const R = [10, 20, 50][LV], M = LV === 2 ? 12 : 10;
+  let i = 0, sc = 0, a, b, op, ans;
+  const gen = () => {
+    a = 1 + Math.floor(Math.random() * R); b = 1 + Math.floor(Math.random() * R);
+    op = ['+', '-', '×'][Math.floor(Math.random() * (LV ? 3 : 2))];
+    if (op === '-' && b > a) [a, b] = [b, a];
+    if (op === '×') { a = 1 + Math.floor(Math.random() * M); b = 1 + Math.floor(Math.random() * M); }
+    ans = op === '+' ? a + b : op === '-' ? a - b : a * b;
+  };
+  const draw = fb => {
+    if (i >= 10) { out.innerHTML = '<p><b>Finished! Score: ' + sc + ' / 10</b></p>' + ctl(); bindCtl(mathGame); return; }
+    out.innerHTML = '<p class="msg">Question ' + (i + 1) + ' of 10. Score: ' + sc + '</p><p style="font-size:30px;margin:8px 0"><b>' + a + ' ' + op + ' ' + b + ' = ?</b></p><p class="msg">' + fb + '</p><div class="box" style="max-width:300px"><input id="mv" type="number" inputmode="numeric" placeholder="Answer" style="flex:1;min-width:0;border:0;outline:0;background:none;color:var(--fg);font:inherit;padding:8px 0"><button class="go" id="mg">Check</button></div>' + ctl();
+    bindCtl(mathGame);
+    const chk = () => { const v = parseInt($('mv').value, 10); if (isNaN(v)) return; const ok = v === ans; if (ok) sc++; i++; const fb2 = ok ? 'Correct!' : 'Not quite. It was ' + ans + '.'; if (i < 10) gen(); draw(fb2); };
+    $('mg').onclick = chk; $('mv').addEventListener('keydown', e => { if (e.key === 'Enter') chk(); });
+  };
+  gen(); draw('');
+}
+function moleGame() {
+  const out = $('out'), gid = ++gameId; clearInterval(tmr);
+  let sc = 0, t = 20, m = -1, tick = 0; const sp = [900, 700, 500][LV];
+  out.innerHTML = '<p class="msg" id="mm">Score: 0. Time: 20</p><div class="board" id="mb">' + '<button class="cell"></button>'.repeat(9) + '</div>' + ctl(); bindCtl(moleGame);
+  const cells = [...out.querySelectorAll('#mb .cell')];
+  const show = () => cells.forEach((c, i) => c.textContent = i === m ? '🐹' : '');
+  const upd = () => { $('mm').textContent = (t > 0 ? '' : 'Time is up! ') + 'Score: ' + sc + (t > 0 ? '. Time: ' + t : ''); };
+  cells.forEach((c, i) => c.onpointerdown = () => { if (t > 0 && i === m) { sc++; m = -1; show(); upd(); } });
+  tmr = setInterval(() => {
+    if (gid !== gameId) { clearInterval(tmr); return; }
+    tick += 100; if (tick % 1000 === 0) t--;
+    if (tick % sp === 0) { m = Math.floor(Math.random() * 9); show(); }
+    if (t <= 0) { clearInterval(tmr); m = -1; show(); }
+    upd();
+  }, 100);
+}
+function simonGame() {
+  const out = $('out'), gid = ++gameId;
+  const col = ['#ea4335', '#34a853', '#fbbc05', '#4285f4'], dl = [700, 500, 350][LV];
+  let seq = [], pos = 0, lock = true;
+  out.innerHTML = '<p class="msg" id="sm">Watch the pattern.</p><div class="board" style="grid-template-columns:repeat(2,1fr);max-width:260px">' + col.map((c, i) => '<button class="cell" style="background:' + c + ';opacity:.45"></button>').join('') + '</div>' + ctl(); bindCtl(simonGame);
+  const bt = [...out.querySelectorAll('.cell')];
+  const flash = i => { bt[i].style.opacity = 1; setTimeout(() => { bt[i].style.opacity = .45; }, dl * 0.6); };
+  const play = () => {
+    lock = true; pos = 0; seq.push(Math.floor(Math.random() * 4)); $('sm').textContent = 'Watch the pattern. Round ' + seq.length;
+    seq.forEach((s, k) => setTimeout(() => { if (gid === gameId) flash(s); }, 600 + k * dl));
+    setTimeout(() => { if (gid === gameId) { lock = false; $('sm').textContent = 'Your turn. Round ' + seq.length; } }, 600 + seq.length * dl);
+  };
+  bt.forEach((b, i) => b.onpointerdown = () => {
+    if (lock) return; flash(i);
+    if (i !== seq[pos]) { lock = true; $('sm').textContent = 'Wrong! You reached round ' + seq.length + '.'; return; }
+    if (++pos === seq.length) { lock = true; setTimeout(() => { if (gid === gameId) play(); }, 700); }
+  });
+  play();
+}
+function slideGame() {
+  const out = $('out'); gameId++;
+  const t = [1, 2, 3, 4, 5, 6, 7, 8, 0], moves0 = 0;
+  const nb = z => [[1, 3], [0, 2, 4], [1, 5], [0, 4, 6], [1, 3, 5, 7], [2, 4, 8], [3, 7], [4, 6, 8], [5, 7]][z];
+  let z = 8, last = -1, moves = moves0;
+  for (let k = 0, n = [20, 60, 150][LV]; k < n; k++) { const c = nb(z).filter(x => x !== last); const m = c[Math.floor(Math.random() * c.length)]; t[z] = t[m]; t[m] = 0; last = z; z = m; }
+  const draw = () => {
+    const won = t.every((v, i) => v === (i + 1) % 9);
+    out.innerHTML = '<p class="msg">Moves: ' + moves + (won ? '. Solved! 🎉' : '. Tap a tile next to the gap.') + '</p><div class="board">' + t.map((v, i) => '<button class="cell" data-i="' + i + '"' + (v ? '' : ' style="background:none;border-style:dashed"') + '>' + (v || '') + '</button>').join('') + '</div>' + ctl();
+    bindCtl(slideGame);
+    out.querySelectorAll('.cell').forEach(c => c.onclick = () => { const i = +c.dataset.i, g = t.indexOf(0); if (!won && nb(i).includes(g)) { t[g] = t[i]; t[i] = 0; moves++; draw(); } });
+  };
+  draw();
+}
+function scrambleGame() {
+  const out = $('out'); gameId++;
+  const pool = WORDS.filter(x => LV === 0 ? x.length <= 6 : LV === 1 ? x.length > 6 && x.length < 10 : x.length >= 10);
+  let sc = 0, w, sh;
+  const pick = () => { w = pool[Math.floor(Math.random() * pool.length)].toUpperCase(); do { sh = [...w].sort(() => Math.random() - 0.5).join(''); } while (sh === w); };
+  const draw = fb => {
+    out.innerHTML = '<p class="msg">Score: ' + sc + '</p><p style="font-size:30px;letter-spacing:4px;margin:8px 0"><b>' + sh + '</b></p><p class="msg">' + fb + '</p><div class="box" style="max-width:300px"><input id="wv" type="text" placeholder="Your word" autocomplete="off" style="flex:1;min-width:0;border:0;outline:0;background:none;color:var(--fg);font:inherit;padding:8px 0"><button class="go" id="wg">Check</button></div><div style="margin-top:12px"><button class="mode" id="ws">Skip</button></div>' + ctl();
+    bindCtl(scrambleGame);
+    const chk = () => { if ($('wv').value.trim().toUpperCase() === w) { sc++; pick(); draw('Correct!'); } else draw('Try again.'); };
+    $('wg').onclick = chk; $('wv').addEventListener('keydown', e => { if (e.key === 'Enter') chk(); });
+    $('ws').onclick = () => { const old = w; pick(); draw('The word was ' + old + '.'); };
+  };
+  pick(); draw('Unscramble the word.');
+}
+function reactGame() {
+  const out = $('out'), gid = ++gameId;
+  out.innerHTML = '<button class="opt" id="rb" style="height:160px;font-size:22px;text-align:center">Tap to start</button><p class="msg" id="rm"></p>' + ctl(); bindCtl(reactGame);
+  const rb = $('rb'); let st = 0, ready = false, to;
+  const reset = (txt) => { rb.textContent = txt; rb.style.background = ''; rb.style.color = ''; };
+  rb.onpointerdown = () => {
+    if (!st && !ready) {
+      st = 1; rb.textContent = 'Wait for green…'; rb.style.background = '#ea4335'; rb.style.color = '#fff';
+      to = setTimeout(() => { if (gid !== gameId) return; ready = true; st = Date.now(); rb.textContent = 'TAP NOW!'; rb.style.background = '#34a853'; }, 1000 + Math.random() * 3000);
+    } else if (!ready) { clearTimeout(to); st = 0; reset('Too early! Tap to try again'); }
+    else { $('rm').textContent = 'Your time: ' + (Date.now() - st) + ' ms'; ready = false; st = 0; reset('Tap to play again'); }
+  };
+}
+function fillApps() {
+  const d = $('codedev').value;
+  const L = d === 'Laptop or computer' ? ['Recommend one for me', 'Arduino IDE', 'VS Code', 'IDLE (comes with Python)', 'PyCharm', 'Terminal or Command Prompt', 'Replit (website)', 'Google Colab (website)', 'CodePen or W3Schools (website)']
+    : d === 'iPhone' ? ['Recommend one for me', 'Pyto (app)', 'Pythonista (app)', 'Replit (website)', 'Google Colab (website)', 'CodePen or W3Schools (website)']
+    : ['Recommend one for me', 'ArduinoDroid (app)', 'Termux (app)', 'Pydroid 3 (app)', 'Acode (app)', 'Replit (website)', 'Google Colab (website)', 'CodePen or W3Schools (website)'];
+  $('codeapp').innerHTML = L.map(x => '<option>' + x + '</option>').join('');
+}
+function copyText(t, ok, fail) {
+  const fb = () => {
+    const ta = document.createElement('textarea');
+    ta.value = t; ta.style.cssText = 'position:fixed;top:0;left:0;opacity:0';
+    document.body.appendChild(ta); ta.focus(); ta.select(); ta.setSelectionRange(0, t.length);
+    let r = false; try { r = document.execCommand('copy'); } catch (e) {}
+    ta.remove(); (r ? ok : fail)();
+  };
+  if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(t).then(ok, fb); else fb();
+}
+function renderCode(text, box) {
+  const codes = [];
+  box.innerHTML = text.split('```').map((p, i) => {
+    if (i % 2) { const c = p.replace(/^[a-zA-Z0-9+#.-]*\n/, '').replace(/\n$/, ''); codes.push(c); return '<div class="codebox"><button class="mode cp">Copy</button><pre><code>' + esc(c) + '</code></pre></div>'; }
+    return p.trim() ? '<div class="ans">' + md(p.trim()) + '</div>' : '';
+  }).join('') || '<p class="msg">No code came back. Try describing it again.</p>';
+  box.querySelectorAll('.cp').forEach((b, i) => b.onclick = () => copyText(codes[i],
+    () => { b.textContent = 'Copied'; setTimeout(() => { b.textContent = 'Copy'; }, 1500); },
+    () => {
+      const el = box.querySelectorAll('code')[i], sel = window.getSelection(), r = document.createRange();
+      r.selectNodeContents(el); sel.removeAllRanges(); sel.addRange(r);
+      b.textContent = 'Selected. Tap Copy on your phone';
+    }));
+}
+async function codeTurn(text) {
+  const out = $('out'), fresh = !codeHist.length, lang = $('codelang').value;
+  const dev = $('codedev').value, app = $('codeapp').value, rec = /^Recommend/.test(app);
+  const SYS = 'You are a patient coding tutor for a school student who is using ' + dev + '. The language is ' + lang + '. ' +
+    (rec ? 'The student has not chosen an app, so recommend the single best free app or website for them.' : 'The student chose to write and run the code in ' + app + '. Use exactly that app or website and do not suggest another one.') +
+    ' If the student uploads or pastes their own code, or sends a photo of code or of an error, do not start Step 0: check the code carefully, list each syntax or logic error with its line in simple words, then give the complete corrected code in one code block and say how to run it in the chosen app. Otherwise work step by step and never give all the code at once. FIRST REPLY: do not write the program yet. Give "Step 0: Setup": say exactly how to get and open the tool (install it from the official store or open the website), tell the student to update it if it asks, and give one tiny test line to check that it works. Then give a short numbered plan of the coding steps, one line each. End by telling the student to finish the setup and tap Next step. LATER STEPS: when asked for the next step, give only that one step: one code block with brief comments and 1 to 3 simple sentences. Include only the new code that this step truly needs. Do not repeat earlier code, and do not add filler such as greetings, name questions or extra print lines unless the student asked for them. Say exactly where to paste the code. If a step needs a library, first say how to install it in ' + (rec ? 'the chosen tool' : app) + '. Focus on what the program must actually do for the student goal. If the student pastes an error, help fix the current step. After the last step, show the complete final code once. ACCURACY RULES: the code must be exact, complete and runnable as written. Check the syntax, indentation (use 4 spaces), matching quotes and brackets, and use only plain straight quotes. Prefer the standard library. If new code must go inside earlier code, show the complete updated file so the student can replace everything; otherwise show only the new code to add at the end. For Arduino code always include setup() and loop(), name the board it is for, and describe the wiring in simple words.' +
+    (app.indexOf('Termux') >= 0 ? ' Termux is a terminal app. Never tell the student to paste code straight into the terminal. In setup give the exact commands pkg update, then pkg install python nano, and explain how to create a file with nano, for example nano assistant.py, paste the code, save with Ctrl+O then Enter, exit with Ctrl+X, and run it with python assistant.py. For speaking and listening use the termux-api package and the Termux:API app, and explain how to install them.' : '');
+  out.querySelectorAll('.cbar').forEach(x => x.remove());
+  if (fresh) out.innerHTML = '';
+  let extra = '';
+  if (codeFile) extra += '\n\nMy file ' + codeFile.name + ':\n```\n' + codeFile.text + '\n```';
+  const pv = $('codepaste').value.trim(); if (pv) extra += '\n\nMy code:\n```\n' + pv + '\n```';
+  const note = (codeFile ? ' [file: ' + codeFile.name + ']' : '') + (pv ? ' [pasted code]' : '') + (img ? ' [photo]' : '');
+  codeFile = null; $('cchip').textContent = ''; $('codepaste').value = ''; $('codepaste').style.display = 'none';
+  if (text !== 'Next step') out.insertAdjacentHTML('beforeend', '<p class="msg"><b>You:</b> ' + esc(text + note) + '</p>');
+  const wait = document.createElement('p'); wait.className = 'msg'; wait.id = 'pct'; wait.style.cursor = 'pointer'; wait.onclick = openOv; out.appendChild(wait);
+  const box = document.createElement('div'); out.appendChild(box); prog.start('Writing your code');
+  const parts = [];
+  if (img) { parts.push({ inline_data: { mime_type: img.mime, data: img.data } }); img = null; $('preview').style.display = 'none'; $('file').value = ''; }
+  parts.push({ text: (fresh && !extra ? 'Request: ' + text : text) + extra });
+  codeHist.push({ role: 'user', parts });
+  try {
+    let first = true;
+    const reply = await streamText({ systemInstruction: { parts: [{ text: SYS }] }, contents: codeHist, generationConfig: { temperature: 0.2 } }, t => { if (first) { first = false; wait.remove(); } renderCode(t, box); });
+    if (!reply) throw new Error('Nothing came back. Try again.');
+    prog.finish();
+    codeHist.push({ role: 'model', parts: [{ text: reply }] });
+    out.insertAdjacentHTML('beforeend', '<div class="cbar" style="margin-top:12px"><button class="go" id="cnext">Next step ▶</button> <button class="mode" id="cexp">Explain more</button> <button class="mode" id="cnew">New code</button></div>');
+    $('cnext').onclick = () => codeTurn('Next step');
+    $('cexp').onclick = () => codeTurn('Explain this step in simpler words.');
+    $('cnew').onclick = () => { codeHist = []; out.innerHTML = ''; $('q').value = ''; $('q').placeholder = 'Describe the code you want'; };
+    $('q').placeholder = 'Reply, paste an error, or tap Next step';
+  } catch (e) {
+    prog.finish(); codeHist.pop(); wait.remove(); box.remove();
+    let m = e.message || 'Something went wrong.';
+    if (/failed to fetch|networkerror|load failed/i.test(m)) m = 'You seem to be offline. Code needs internet.';
+    else if (/quota/i.test(m)) m = 'Today’s free Gemini limit is used up. Try again later.';
+    else if (/high demand|overloaded/i.test(m)) m = 'Gemini is busy. Wait a minute and try again.';
+    out.insertAdjacentHTML('beforeend', '<p class="err">' + esc(m) + '</p>');
+  }
+}
+const prog = {
+  p: 0, on: false, t: null, label: 'Working',
+  start(label) { this.p = 0; this.on = true; this.label = label || 'Working'; clearInterval(this.t); this.t = setInterval(() => { this.p = Math.min(95, this.p + (95 - this.p) * 0.05 + 0.2); this.paint(); }, 300); this.paint(); },
+  finish() { clearInterval(this.t); this.on = false; this.p = 100; this.paint(); },
+  paint() {
+    const n = Math.floor(this.p), pc = $('pct'), ov = $('ovp');
+    if (pc) pc.innerHTML = this.on ? esc(this.label) + '… ' + n + '%. <u>Tap here to play Snake while you wait.</u>' : '';
+    if (ov) ov.textContent = this.on ? this.label + '… ' + n + '%' : 'Done 100%! Your answer is ready.';
+    $('ovx').textContent = this.on ? 'Close' : 'Show answer';
+  }
+};
+let otmr;
+function closeOv() { clearInterval(otmr); $('ov').style.display = 'none'; }
+function openOv() { $('ov').style.display = 'block'; prog.paint(); miniSnake($('ovg')); }
+function miniSnake(box) {
+  clearInterval(otmr);
+  box.innerHTML = '<p class="msg" id="ovs">Score: 0 🍎. Swipe to turn. You only lose by biting yourself.</p><div id="ovsw" style="touch-action:none;padding:20px 0;min-height:60vh"><canvas id="ovc" width="300" height="300" style="width:100%;max-width:340px;border:1px solid var(--line);border-radius:12px;display:block;margin:0 auto"></canvas></div><button class="mode" id="ovr">Restart</button>';
+  const cx = $('ovc').getContext('2d'), N = 15, S = 20, V = { L: [-1, 0], R: [1, 0], U: [0, -1], D: [0, 1] };
+  let sn = [[7, 7], [6, 7]], d = V.R, nd = d, ap = [10, 7], sc = 0;
+  const put = () => { do { ap = [Math.floor(Math.random() * N), Math.floor(Math.random() * N)]; } while (sn.some(s => s[0] === ap[0] && s[1] === ap[1])); };
+  const dir = k => { const v = V[k]; if (v && (v[0] !== -d[0] || v[1] !== -d[1])) nd = v; };
+  swipe($('ovsw'), dir);
+  $('ovr').onclick = () => miniSnake(box);
+  const paint = () => { cx.fillStyle = '#202124'; cx.fillRect(0, 0, 300, 300); cx.fillStyle = '#34a853'; sn.forEach(s => cx.fillRect(s[0] * S, s[1] * S, S - 2, S - 2)); cx.font = '18px serif'; cx.fillText('🍎', ap[0] * S, ap[1] * S + 17); };
+  otmr = setInterval(() => {
+    d = nd; const h = [(sn[0][0] + d[0] + N) % N, (sn[0][1] + d[1] + N) % N];
+    if (sn.some(s => s[0] === h[0] && s[1] === h[1])) { clearInterval(otmr); $('ovs').textContent = 'Game over. Score: ' + sc + ' 🍎'; return; }
+    sn.unshift(h);
+    if (h[0] === ap[0] && h[1] === ap[1]) { sc++; $('ovs').textContent = 'Score: ' + sc + ' 🍎'; put(); } else sn.pop();
+    paint();
+  }, 140);
+  paint();
+}
+async function streamText(body, onText) {
+  let last;
+  for (const m of TEXT_MODELS) {
+    try {
+      const res = await fetch(API + '?stream=1&model=' + encodeURIComponent(m), {
+        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body)
+      });
+      if (!res.ok) { let msg = 'Request failed'; try { const j = await res.json(); msg = (j.error && j.error.message) || msg; } catch (e) {} throw new Error(msg); }
+      const rd = res.body.getReader(), dec = new TextDecoder();
+      let buf = '', full = '';
+      for (;;) {
+        const { done, value } = await rd.read(); if (done) break;
+        buf += dec.decode(value, { stream: true });
+        let i;
+        while ((i = buf.indexOf('\n')) >= 0) {
+          const line = buf.slice(0, i).trim(); buf = buf.slice(i + 1);
+          if (line.startsWith('data:')) {
+            try { const j = JSON.parse(line.slice(5)); const c = j.candidates && j.candidates[0]; const t = c && c.content && c.content.parts ? c.content.parts.map(p => p.text || '').join('') : ''; if (t) { full += t; onText(full); } } catch (e) {}
+          }
+        }
+      }
+      return full;
+    } catch (e) { last = e; if (/no longer available|not found|quota|high demand|overloaded|unavailable/i.test(e.message)) continue; throw e; }
+  }
+  throw last;
+}
+const WORDS = ['photosynthesis', 'gravity', 'triangle', 'fraction', 'planet', 'volcano', 'electricity', 'tiger', 'elephant', 'library', 'mountain', 'river', 'oxygen', 'science', 'history', 'geography', 'computer', 'keyboard', 'festival', 'rainbow', 'pencil', 'teacher', 'village', 'market', 'garden', 'energy', 'magnet', 'insect', 'island', 'desert'];
+function hangGame() {
+  const out = $('out'); gameId++;
+  const pool = WORDS.filter(x => LV === 0 ? x.length <= 6 : LV === 1 ? x.length > 6 && x.length < 10 : x.length >= 10), w = pool[Math.floor(Math.random() * pool.length)].toUpperCase(), used = new Set();
+  let wrong = 0;
+  const draw = () => {
+    const won = [...w].every(c => used.has(c)), lost = wrong >= 6;
+    out.innerHTML = '<p class="msg">Lives: ' + '❤️'.repeat(6 - wrong) + '🖤'.repeat(wrong) + '</p><p style="font-size:28px;letter-spacing:4px;margin:8px 0"><b>' + [...w].map(c => used.has(c) || lost ? c : '_').join(' ') + '</b></p>' +
+      (won ? '<p><b>You won! 🎉</b></p>' : lost ? '<p><b>You lost. The word was ' + w + '.</b></p>' : '<div class="keys">' + 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').map(c => '<button class="mode" data-c="' + c + '"' + (used.has(c) ? ' disabled' : '') + '>' + c + '</button>').join('') + '</div>') + ctl();
+    out.querySelectorAll('[data-c]').forEach(b => b.onclick = () => { used.add(b.dataset.c); if (!w.includes(b.dataset.c)) wrong++; draw(); });
+    bindCtl(hangGame);
+  };
+  draw();
+}
+function dinoGame() {
+  const out = $('out'), gid = ++gameId;
+  let hi = 0; try { hi = +localStorage.getItem('gdino') || 0; } catch (e) {}
+  out.innerHTML = '<p class="msg" id="ds"></p><div id="dw" style="touch-action:none;display:flex;align-items:center;min-height:240px"><canvas id="dc" width="600" height="150" style="width:100%;border:1px solid var(--line);border-radius:12px;background:#f1f3f4"></canvas></div>' + ctl();
+  bindCtl(dinoGame);
+  const cx = $('dc').getContext('2d');
+  let y = 0, vy = 0, duck = false, obs = [], clouds = [[100, 40], [380, 65]], speed = [4, 5, 7][LV], score = 0, over = false, gap = 60;
+  const jump = () => { if (y === 0 && !over) { vy = 10; y = 0.01; duck = false; } };
+  const setDuck = v => { if (y === 0 || !v) duck = v; };
+  const dw = $('dw');
+  dw.onpointerdown = e => { const r = dw.getBoundingClientRect(); if (e.clientY - r.top > r.height * 0.6) setDuck(true); else jump(); };
+  dw.onpointerup = dw.onpointercancel = dw.onpointerleave = () => setDuck(false);
+  window.onkeydown = e => { if (e.key === ' ' || e.key === 'ArrowUp') { e.preventDefault(); jump(); } else if (e.key === 'ArrowDown') { e.preventDefault(); setDuck(true); } };
+  window.onkeyup = e => { if (e.key === 'ArrowDown') setDuck(false); };
+  const spawn = () => {
+    if (score > 30 && Math.random() < 0.3) obs.push({ x: 600, t: '🦅', w: 30, h: 30, by: 24 });
+    else { const n = 1 + Math.floor(Math.random() * 3); obs.push({ x: 600, t: '🌵'.repeat(n), w: 22 * n, h: 28, by: 0 }); }
+  };
+  const loop = () => {
+    if (gid !== gameId) return;
+    if (y > 0) { y += vy; vy -= 0.55; if (y <= 0) { y = 0; vy = 0; } }
+    if (--gap <= 0) { spawn(); gap = Math.floor(45 + Math.random() * 60 + 600 / speed); }
+    obs.forEach(o => o.x -= speed); obs = obs.filter(o => o.x > -80);
+    const dh = duck ? 16 : 30;
+    if (obs.some(o => o.x < 68 && o.x + o.w > 44 && y < o.by + o.h && y + dh > o.by)) over = true;
+    score += 0.15; speed = [4, 5, 7][LV] + score / 60;
+    cx.clearRect(0, 0, 600, 150);
+    cx.font = '28px serif'; clouds.forEach(c => { c[0] -= speed * 0.2; if (c[0] < -40) c[0] = 620; cx.fillText('☁️', c[0], c[1]); });
+    cx.fillStyle = '#9aa0a6'; cx.fillRect(0, 122, 600, 2);
+    cx.font = '34px serif';
+    cx.save(); cx.translate(74, 120 - y); cx.scale(-1, duck ? 0.6 : 1); cx.fillText('🦖', 0, 0); cx.restore();
+    obs.forEach(o => cx.fillText(o.t, o.x, 120 - o.by));
+    const sc = Math.floor(score);
+    if (over && sc > hi) { hi = sc; try { localStorage.setItem('gdino', String(hi)); } catch (e) {} }
+    $('ds').textContent = (over ? 'Game over. ' : '') + 'Score: ' + sc + '. Best: ' + hi + (over ? '' : '. Tap to jump. Touch and hold the lower part to duck.');
+    if (!over) requestAnimationFrame(loop);
+  };
+  loop();
+}
+try { if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) navigator.serviceWorker.register('sw.js').catch(() => {}); } catch (e) {}
+const SITES = { youtube: 'youtube.com', google: 'google.com', wikipedia: 'wikipedia.org', instagram: 'instagram.com', facebook: 'facebook.com', whatsapp: 'web.whatsapp.com', gmail: 'mail.google.com', github: 'github.com', amazon: 'amazon.in', flipkart: 'flipkart.com', netflix: 'netflix.com', twitter: 'x.com', linkedin: 'linkedin.com', reddit: 'reddit.com', spotify: 'spotify.com', roblox: 'roblox.com', minecraft: 'minecraft.net', crazygames: 'crazygames.com', poki: 'poki.com', chess: 'chess.com', lichess: 'lichess.org', miniclip: 'miniclip.com', steam: 'store.steampowered.com', 'epic games': 'epicgames.com', wordle: 'nytimes.com/games/wordle/index.html', sudoku: 'sudoku.com', '2048': 'play2048.co' };
+function siteFor(q) {
+  const t = q.trim().replace(/^(open|go to|visit|play)\s+/i, '');
+  if (SITES[t.toLowerCase()]) return 'https://' + SITES[t.toLowerCase()];
+  if (/^(https?:\/\/)?([a-z0-9-]+\.)+[a-z]{2,}(\/\S*)?$/i.test(t)) return /^https?:\/\//i.test(t) ? t : 'https://' + t;
+  return null;
+}
+function getSearches() { try { return JSON.parse(localStorage.getItem('gsearch') || '[]'); } catch (e) { return []; } }
+function saveSearch(q) {
+  try {
+    const h = getSearches().filter(x => x.toLowerCase() !== q.toLowerCase());
+    h.unshift(q); localStorage.setItem('gsearch', JSON.stringify(h.slice(0, 30)));
+  } catch (e) {}
+}
+function renderSugg() {
+  const box = $('sugg'), v = $('q').value.trim().toLowerCase();
+  const list = mode === 'search' ? getSearches().filter(x => x.toLowerCase() !== v && x.toLowerCase().includes(v)).slice(0, 6) : [];
+  box.innerHTML = '';
+  if (!list.length) { box.style.display = 'none'; return; }
+  list.forEach(h => {
+    const b = document.createElement('button');
+    b.textContent = '🕘  ' + h;
+    b.onpointerdown = e => e.preventDefault();
+    b.onclick = () => { $('q').value = h; box.style.display = 'none'; run(); };
+    box.appendChild(b);
+  });
+  const c = document.createElement('button');
+  c.className = 'clr'; c.textContent = 'Clear history';
+  c.onpointerdown = e => e.preventDefault();
+  c.onclick = () => { try { localStorage.removeItem('gsearch'); } catch (e) {} box.style.display = 'none'; };
+  box.appendChild(c);
+  box.style.display = 'block';
+}
+function loadHist() { try { return JSON.parse(localStorage.getItem('ghist') || '[]'); } catch (e) { return []; } }
+function saveHist(r, replace) { try { const h = loadHist(); if (replace && h.length) h[0] = r; else h.unshift(r); localStorage.setItem('ghist', JSON.stringify(h.slice(0, 50))); } catch (e) {} }
+function showHist() {
+  document.body.classList.add('has');
+  const h = loadHist(), out = $('out');
+  if (!h.length) { out.innerHTML = '<p class="msg">No scores saved yet. Finish a test and your score will show here.</p>'; return; }
+  out.innerHTML = '<h2 style="font-size:18px;margin:0 0 8px">My scores</h2>' + h.map(r =>
+    '<p class="ans"><b>' + r.sc + ' / ' + r.total + '</b>, ' + esc(r.level) + ', ' + esc(r.topic) + '<br><span class="msg">' + esc(r.date) + '</span></p>').join('') +
+    '<button class="mode" id="clr">Clear scores</button>';
+  $('clr').onclick = () => { try { localStorage.removeItem('ghist'); } catch (e) {} showHist(); };
+}
+
+function normQ(x) {
+  if (!x || !x.question) return null;
+  if (x.type === 'tf') {
+    const a = x.answer === true || String(x.answer).toLowerCase() === 'true';
+    return { type: 'tf', question: x.question, options: ['True', 'False'], answer: a ? 0 : 1, explanation: x.explanation };
+  }
+  if (x.type === 'short') {
+    if (!x.answer) return null;
+    return { type: 'short', question: x.question, answer: String(x.answer), explanation: x.explanation };
+  }
+  if (x.type === 'fill') {
+    if (x.answer == null || x.answer === '') return null;
+    return { type: 'fill', question: x.question, answer: String(x.answer), explanation: x.explanation };
+  }
+  if (Array.isArray(x.options) && typeof x.answer === 'number') return { type: 'mcq', question: x.question, options: x.options, answer: x.answer, explanation: x.explanation };
+  return null;
+}
+
+function renderTest(qs, meta) {
+  const out = $('out'), ans = {}, marks = {};
+  let done = false, timeUp = false, auto = 0, saved = false;
+  const shortN = qs.filter(q => q.type === 'short').length;
+  out.innerHTML = (meta && meta.mins ? '<div id="timer"></div>' : '') + qs.map((q, i) => {
+    let body;
+    if (q.type === 'fill') body = '<input class="fillin" id="f' + i + '" type="text" placeholder="Type your answer" autocomplete="off">';
+    else if (q.type === 'short') body = '<textarea class="fillin" id="f' + i + '" rows="3" placeholder="Write your answer"></textarea>';
+    else body = q.options.map((o, j) => '<button class="opt" data-q="' + i + '" data-o="' + j + '">' + (q.type === 'tf' ? '' : 'ABCD'[j] + '. ') + esc(String(o)) + '</button>').join('');
+    return '<div class="q"><p><b>' + (i + 1) + '. ' + esc(String(q.question)) + '</b></p>' + body + '<p class="why" id="why' + i + '"></p><div id="mk' + i + '"></div></div>';
+  }).join('') + '<button class="go" id="sub">Submit answers</button><p id="score"></p>';
+  out.querySelectorAll('.opt').forEach(b => b.onclick = () => {
+    if (done) return;
+    const i = b.dataset.q; ans[i] = +b.dataset.o;
+    out.querySelectorAll('.opt[data-q="' + i + '"]').forEach(x => x.classList.toggle('sel', x === b));
+  });
+  const update = () => {
+    const got = auto + Object.values(marks).reduce((a, b) => a + b, 0);
+    const pending = shortN - Object.keys(marks).length;
+    $('score').textContent = (timeUp ? 'Time is up. ' : '') + 'Your score: ' + got + ' / ' + qs.length + (pending > 0 ? '. Mark your ' + pending + ' short ' + (pending > 1 ? 'answers' : 'answer') + ' above.' : '');
+    if (meta) {
+      saveHist({ sc: got, total: qs.length, level: meta.level, topic: meta.topic, date: new Date().toLocaleDateString(undefined, { day: 'numeric', month: 'short' }) }, saved);
+      saved = true;
+    }
+  };
+  const clean = t => String(t).toLowerCase().replace(/[.\s]+$/, '').trim();
+  const submit = () => {
+    if (done) return;
+    clearInterval(tmr); done = true;
+    qs.forEach((q, i) => {
+      if (q.type === 'fill') {
+        const el = $('f' + i);
+        const right = clean(el.value) === clean(q.answer);
+        el.classList.add(right ? 'ok' : 'bad'); el.disabled = true;
+        $('why' + i).textContent = (right ? '' : 'Answer: ' + q.answer + '. ') + (q.explanation || '');
+        if (right) auto++;
+      } else if (q.type === 'short') {
+        $('f' + i).disabled = true;
+        $('why' + i).textContent = 'Model answer: ' + q.answer + (q.explanation ? '. ' + q.explanation : '');
+        const mk = $('mk' + i);
+        mk.innerHTML = '<button class="mode" data-m="1">I got it right</button> <button class="mode" data-m="0">Not quite</button>';
+        mk.querySelectorAll('button').forEach(b => b.onclick = () => {
+          marks[i] = +b.dataset.m;
+          mk.querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b));
+          update();
+        });
+      } else {
+        out.querySelectorAll('.opt[data-q="' + i + '"]').forEach((b, j) => {
+          if (j === q.answer) b.classList.add('ok'); else if (ans[i] === j) b.classList.add('bad');
+        });
+        $('why' + i).textContent = q.explanation || '';
+        if (ans[i] === q.answer) auto++;
+      }
+    });
+    update();
+    $('sub').style.display = 'none';
+    const t = $('timer'); if (t) t.style.display = 'none';
+  };
+  $('sub').onclick = submit;
+  clearInterval(tmr);
+  if (meta && meta.mins > 0) {
+    let left = meta.mins * 60;
+    const tick = () => {
+      const el = $('timer');
+      if (!el) { clearInterval(tmr); return; }
+      el.textContent = 'Time left: ' + Math.floor(left / 60) + ':' + String(left % 60).padStart(2, '0');
+      if (left <= 0) { timeUp = true; submit(); return; }
+      left--;
+    };
+    tick(); tmr = setInterval(tick, 1000);
+  }
+}
+
+async function callImg(body) {
+  let last;
+  for (const m of IMG_MODELS) {
+    try { return await call(m, body); }
+    catch (e) { last = e; if (!/no longer available|not found|shut down|deprecated/i.test(e.message)) throw e; }
+  }
+  throw last;
+}
+
+async function callText(body) {
+  let last;
+  for (const m of TEXT_MODELS) {
+    for (let a = 0; a < 2; a++) {
+      try { return await call(m, body); }
+      catch (e) {
+        last = e;
+        if (/high demand|overloaded|unavailable/i.test(e.message)) { if (a === 0) await new Promise(r => setTimeout(r, 1200)); continue; }
+        if (/quota|no longer available|not found/i.test(e.message)) break;
+        throw e;
+      }
+    }
+  }
+  throw last;
+}
+
+async function run() {
+  const q = $('q').value.trim();
+  if (!q && !img && !(mode === 'code' && (codeFile || $('codepaste').value.trim()))) return;
+  $('sugg').style.display = 'none';
+  if (mode === 'search' && q && !img) {
+    if (/^(games?|play games?)$/i.test(q)) { showGames(); return; }
+    saveSearch(q);
+    const site = siteFor(q);
+    if (site) { window.location.href = site; return; }
+  }
+  const out = $('out');
+  clearInterval(tmr);
+  gameId++; window.onkeydown = window.onkeyup = null;
+  const rid = ++runId;
+  document.body.classList.add('has');
+  if (mode === 'code') {
+    $('go').disabled = true;
+    const t = q || (codeFile || $('codepaste').value.trim() ? 'Please check this code for errors and fix it.' : 'Help me with the attached photo.');
+    $('q').value = '';
+    await codeTurn(t);
+    $('go').disabled = false;
+    return;
+  }
+  const lbl = mode === 'search' ? 'Searching' : mode === 'image' ? 'Creating your image' : mode === 'test' ? 'Preparing your test' : 'Writing your notes';
+  out.innerHTML = '<p class="msg" id="pct" style="cursor:pointer"></p>';
+  $('pct').onclick = openOv; prog.start(lbl);
+  $('go').disabled = true;
+  try {
+    const parts = [];
+    if (img) parts.push({ inline_data: { mime_type: img.mime, data: img.data } });
+    parts.push({ text: q || 'Describe this image.' });
+
+    if (mode === 'image' && $('isvc').value === 'puter') {
+      await puterImage(q, rid);
+    } else if (mode === 'search') {
+      let j, grounded = true;
+      try {
+        j = await callText({ contents: [{ parts }], tools: [{ google_search: {} }] });
+      } catch (e) {
+        if (!/quota/i.test(e.message)) throw e;
+        grounded = false;
+        j = await callText({ contents: [{ parts }] });
+      }
+      const c = j.candidates && j.candidates[0];
+      const text = c && c.content && c.content.parts ? c.content.parts.map(p => p.text || '').join('') : '';
+      let html = '<div class="ans">' + md(text || 'No answer came back. Try rephrasing.') + '</div>';
+      const chunks = (c && c.groundingMetadata && c.groundingMetadata.groundingChunks) || [];
+      const seen = new Set(), links = [];
+      chunks.forEach(g => { if (g.web && !seen.has(g.web.uri)) { seen.add(g.web.uri); links.push(g.web); } });
+      if (links.length) {
+        html += '<div class="src"><h2>Sources</h2>' + links.map(l =>
+          '<a href="' + l.uri + '" target="_blank" rel="noopener">' + esc(l.title || l.uri) + '</a>').join('') + '</div>';
+      }
+      if (!grounded) html += '<p class="msg">Web sources aren’t available on your current Gemini plan, so this answer comes from the model alone.</p>';
+      out.innerHTML = q ? '<div class="tabs"><button class="tab on" id="tAll">All</button><button class="tab" id="tImg">Images</button></div><div id="pAll">' + html + '</div><div id="pImg" style="display:none"></div>' : html;
+      const pAll = $('pAll') || out;
+      if (q) {
+        let imgDone = false;
+        $('tAll').onclick = () => { $('pAll').style.display = ''; $('pImg').style.display = 'none'; $('tAll').classList.add('on'); $('tImg').classList.remove('on'); };
+        $('tImg').onclick = async () => {
+          $('pAll').style.display = 'none'; $('pImg').style.display = ''; $('tImg').classList.add('on'); $('tAll').classList.remove('on');
+          if (imgDone) return;
+          $('pImg').innerHTML = '<p class="msg">Loading images…</p>';
+          const list = await commonsImages(q);
+          if (rid !== runId) return;
+          imgDone = !!(list && list.length);
+          $('pImg').innerHTML = list === null ? '<p class="err">Could not load images. Check your internet and try again.</p>'
+            : !list.length ? '<p class="msg">No images found for this search.</p>'
+            : '<div class="grid">' + list.map(p => '<a href="' + p.imageinfo[0].descriptionurl + '" target="_blank" rel="noopener"><img src="' + p.imageinfo[0].thumburl + '" alt="' + esc(p.title.replace(/^File:/, '')) + '" loading="lazy"></a>').join('') + '</div>';
+        };
+      }
+      if (q) wikiImages(q).then(list => {
+        if (rid !== runId || !list.length) return;
+        pAll.insertAdjacentHTML('afterbegin', '<div class="pics">' + list.map(p =>
+          '<a href="https://en.wikipedia.org/?curid=' + p.pageid + '" target="_blank" rel="noopener"><img src="' + p.thumbnail.source + '" alt="' + esc(p.title) + '" loading="lazy">' + esc(p.title) + '</a>').join('') + '</div>');
+      });
+    } else if (mode === 'image') {
+      let j = null;
+      try {
+        j = await callImg({ contents: [{ parts }], generationConfig: { responseModalities: ['IMAGE', 'TEXT'] } });
+      } catch (e) {
+        if (!q || !/quota|billing|no longer available|not found/i.test(e.message)) throw e;
+      }
+      const ps = (j && j.candidates && j.candidates[0] && j.candidates[0].content.parts) || [];
+      let html = '';
+      ps.forEach(p => {
+        const d = p.inlineData || p.inline_data;
+        if (d) html += '<img alt="Generated image" src="data:' + (d.mimeType || d.mime_type) + ';base64,' + d.data + '">';
+        else if (p.text) html += '<p class="ans">' + esc(p.text) + '</p>';
+      });
+      if (!j) await freeImage(q, rid);
+      else { out.innerHTML = html || '<p class="msg">No image came back. Try a different description.</p>'; if (html) addRetry(0); }
+    } else if (mode === 'test') {
+      const total = Math.max(1, Math.min(100, parseInt($('num').value, 10) || 10));
+      const level = $('cls').selectedOptions[0].text;
+      const batches = Math.ceil(total / 25);
+      let qs = [];
+      for (let k = 0; k < batches; k++) {
+        const n = Math.min(25, total - k * 25);
+        out.innerHTML = '<p class="msg">Preparing your test… (' + qs.length + ' of ' + total + ' ready)</p>';
+        const qt = $('qtype').value;
+        const kinds = qt === 'mixed' ? 'a mix of multiple-choice, true or false, fill in the blank, and short answer questions' : { mcq: 'multiple-choice questions', tf: 'true or false questions', fill: 'fill in the blank questions', short: 'short-answer questions' }[qt];
+        const prompt = 'Create ' + n + ' ' + kinds + ' for a student in ' + level + '. Subject or chapter: ' + (q || 'the attached photo') + '. Match the school level of that class exactly.' + (batches > 1 ? ' This is part ' + (k + 1) + ' of ' + batches + ', so cover different parts of the subject from the other parts.' : '') + ' Reply only with a JSON array. Each item is one of: {"type":"mcq","question":"...","options":["...","...","...","..."],"answer":0,"explanation":"one short sentence"} where answer is the index 0 to 3 of the one correct option; {"type":"tf","question":"a statement","answer":true,"explanation":"one short sentence"} where answer is true or false; {"type":"fill","question":"a sentence with ____ for the blank","answer":"the missing word or number","explanation":"one short sentence"}; {"type":"short","question":"...","answer":"a model answer in 1 to 2 sentences","explanation":"one short sentence"}. Use only the types requested. Write in the same language as the subject.';
+        const tp = img ? [{ inline_data: { mime_type: img.mime, data: img.data } }, { text: prompt }] : [{ text: prompt }];
+        try {
+          const j = await callText({ contents: [{ parts: tp }], generationConfig: { responseMimeType: 'application/json' } });
+          const c = j.candidates && j.candidates[0];
+          const raw = plain(c && c.content && c.content.parts ? c.content.parts.map(p => p.text || '').join('') : '');
+          let got; try { got = JSON.parse(raw.replace(/```json|```/g, '').trim()); } catch (e) { got = null; }
+          got = Array.isArray(got) ? got.map(normQ).filter(Boolean) : [];
+          qs = qs.concat(got);
+        } catch (e) { if (!qs.length) throw e; break; }
+      }
+      if (!qs.length) throw new Error('The test could not be made. Try again or use a simpler topic.');
+      renderTest(qs, { level, topic: q || 'Photo', mins: parseInt($('mins').value, 10) || 0 });
+      if (qs.length < total) out.insertAdjacentHTML('afterbegin', '<p class="msg">Only ' + qs.length + ' of ' + total + ' questions could be made this time. Try again later for the rest.</p>');
+    } else {
+      const level = $('cls').selectedOptions[0].text;
+      const prompt = 'Write short, clear study notes for a student in ' + level + ' on: ' + (q || 'the attached photo') + '. Use simple language that fits that class. Start with a one-line overview, then 4 to 8 key points as lines starting with "- ", put key terms in **bold**, add one or two simple examples, and end with a 3-line summary. Write in the same language as the topic. Do not use markdown headings.';
+      const np = img ? [{ inline_data: { mime_type: img.mime, data: img.data } }, { text: prompt }] : [{ text: prompt }];
+      const text = await streamText({ contents: [{ parts: np }] }, t => { out.innerHTML = '<div class="ans">' + md(t) + '</div>'; });
+      if (!text) out.innerHTML = '<p class="msg">No notes came back. Try again.</p>';
+    }
+  } catch (e) {
+    let m = e.message;
+    if (/failed to fetch|networkerror|load failed/i.test(m)) m = 'You seem to be offline. Search, tests and images need internet, but Games still work.';
+    else if (/high demand|overloaded/i.test(m)) m = 'Google’s Gemini servers are busy right now. Wait a minute and tap the button again.';
+    else if (/quota/i.test(m)) {
+      const t = m.match(/retry in ([0-9hms]+)/i);
+      m = 'Today’s free Gemini limit is used up' + (t ? '. It should reset in about ' + t[1].replace(/\.\d+s/, 's') : '') + '. Try again later, or turn on billing for your key in Google AI Studio.';
+    }
+    out.innerHTML = '<p class="err">' + esc(m) + '</p>';
+  }
+  prog.finish();
+  $('go').disabled = false;
+}
+</script>
+</body>
+</html>
