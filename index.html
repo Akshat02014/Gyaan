@@ -263,9 +263,19 @@ async function call(model, body) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(body)
   });
-  const j = await res.json();
-  if (!res.ok) throw new Error((j.error && j.error.message) || 'Request failed');
+  let j = null, txt = '';
+  try { txt = await res.text(); j = JSON.parse(txt); } catch (e) {}
+  if (!res.ok || !j) throw new Error((j && j.error && (j.error.message || j.error)) || ('Server problem (' + res.status + '): ' + (txt || 'empty reply').slice(0, 160)));
+  if (j.error) throw new Error(j.error.message || String(j.error));
   return j;
+}
+
+async function wikiSearch(q) {
+  try {
+    const u = 'https://en.wikipedia.org/w/api.php?action=query&format=json&origin=*&list=search&srlimit=8&srsearch=' + encodeURIComponent(q);
+    const d = await (await fetch(u)).json();
+    return (d.query && d.query.search) || [];
+  } catch (e) { return []; }
 }
 
 function loadPuter() {
@@ -291,14 +301,4 @@ async function puterImage(q, rid) {
     }
     if (!im) throw lastErr || new Error('No image came back.');
     if (rid !== runId) return;
-    out.innerHTML = '<p class="msg">Made with Puter.</p>';
-    im.style.maxWidth = '100%'; im.style.borderRadius = '12px'; im.alt = 'Generated image';
-    out.appendChild(im);
-    addRetry(0);
-  } catch (e) {
-    let m = '';
-    try {
-      m = e && (e.message || (e.error && (e.error.message || (typeof e.error === 'string' ? e.error : ''))) || (typeof e === 'string' ? e : ''));
-      if (!m && e) m = JSON.stringify(e).slice(0, 250);
-    } catch (x) {}
-    out.innerHTML = '<p class="err">' + esc(m || 'Puter could not make the image. Try again, or swit
+    out.innerHTML = '<p class="m
