@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -80,6 +81,9 @@ body:not(.dark) .go{color:#fff}
 .tab.on{color:var(--blue);border-bottom-color:var(--blue);font-weight:500}
 .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
 .grid img{width:100%;height:140px;object-fit:cover;border-radius:10px;display:block}
+.about{max-width:560px;margin:40px auto 0;display:flex;gap:14px;align-items:center;border:1px solid var(--line);border-radius:14px;padding:14px;background:var(--chip)}
+.about img{width:64px;height:64px;border-radius:50%;flex:none}
+.about h2{margin:0 0 2px;font-size:16px}.about p{margin:0;color:var(--mute);font-size:14px}
 footer{margin-top:48px;text-align:center;color:var(--mute);font-size:13px}
 #sugg{display:none;border:1px solid var(--line);border-radius:12px;margin-top:6px;background:var(--bg);overflow:hidden}
 #sugg button{display:block;width:100%;text-align:left;border:0;background:none;padding:10px 16px}
@@ -148,6 +152,9 @@ footer{margin-top:48px;text-align:center;color:var(--mute);font-size:13px}
 
 
 <div id="out" class="out"></div>
+<section class="about" id="about">
+  <div><h2>About Gyaan</h2><p>Gyaan is a search engine and study helper created and founded by <strong>Akshat Patel</strong>.</p></div>
+</section>
 <footer>Gyaan Search Engine was created and founded by <strong>Akshat Patel</strong>.</footer>
 </main>
 
@@ -213,8 +220,28 @@ $('q').addEventListener('focus', renderSugg);
 $('q').addEventListener('blur', () => setTimeout(() => { $('sugg').style.display = 'none'; }, 150));
 
 function esc(s) { return s.replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c])); }
+function plain(s) {
+  s = String(s);
+  const B = '\\\\{1,2}';
+  const sup = { 0: '⁰', 1: '¹', 2: '²', 3: '³', 4: '⁴', 5: '⁵', 6: '⁶', 7: '⁷', 8: '⁸', 9: '⁹', '-': '⁻', '+': '⁺', n: 'ⁿ' };
+  const toSup = t => t.split('').every(c => sup[c]) ? t.split('').map(c => sup[c]).join('') : '^(' + t + ')';
+  const wrap = t => /^[A-Za-z0-9.\-]+$/.test(t) ? t : '(' + t + ')';
+  s = s.replace(new RegExp(B + '[\\(\\[]|' + B + '[\\)\\]]', 'g'), '').replace(/\$\$?/g, '');
+  for (let i = 0; i < 6; i++) {
+    s = s.replace(new RegExp(B + '[dt]?frac\\s*\\{([^{}]*)\\}\\s*\\{([^{}]*)\\}', 'g'), (m, a, b) => wrap(a.trim()) + '/' + wrap(b.trim()));
+    s = s.replace(new RegExp(B + 'sqrt\\s*\\{([^{}]*)\\}', 'g'), (m, a) => '√' + wrap(a.trim()));
+    s = s.replace(new RegExp(B + 'text(?:bf|rm)?\\s*\\{([^{}]*)\\}', 'g'), '$1');
+    s = s.replace(/\^\{([^{}]*)\}/g, (m, a) => toSup(a)).replace(/_\{([^{}]*)\}/g, '_$1');
+  }
+  s = s.replace(new RegExp('\\^\\s*\\{?' + B + 'circ\\}?', 'g'), '°');
+  s = s.replace(/\^([0-9])/g, (m, a) => sup[a]);
+  const sym = { times: '×', div: '÷', cdot: '·', pm: '±', leq: '≤', le: '≤', geq: '≥', ge: '≥', neq: '≠', approx: '≈', pi: 'π', degree: '°', circ: '°', infty: '∞', theta: 'θ', alpha: 'α', beta: 'β', rightarrow: '→', to: '→', angle: '∠', triangle: '△' };
+  s = s.replace(new RegExp(B + '([A-Za-z]+)', 'g'), (m, w) => w in sym ? sym[w] : (/^(left|right|displaystyle|quad|qquad|mathrm|mathbf)$/.test(w) ? '' : w));
+  s = s.replace(new RegExp(B + '%', 'g'), '%').replace(new RegExp(B + '[,;:! ]', 'g'), ' ').replace(/[{}]/g, '');
+  return s;
+}
 function md(s) {
-  return esc(s).replace(/^#{1,4}\s*(.+)$/gm, '<b>$1</b>').replace(/\*\*(.+?)\*\*/g, '<b>$1</b>').replace(/`([^`\n]+)`/g, '<code>$1</code>').replace(/^[*-] (.+)$/gm, '<li>$1</li>').replace(/<\/li>\n/g, '</li>');
+  return esc(plain(s)).replace(/^#{1,4}\s*(.+)$/gm, '<b>$1</b>').replace(/\*\*(.+?)\*\*/g, '<b>$1</b>').replace(/`([^`\n]+)`/g, '<code>$1</code>').replace(/^[*-] (.+)$/gm, '<li>$1</li>').replace(/<\/li>\n/g, '</li>');
 }
 
 async function call(model, body) {
@@ -279,30 +306,4 @@ function addRetry(cool) {
 }
 async function commonsImages(q) {
   try {
-    const u = 'https://commons.wikimedia.org/w/api.php?action=query&format=json&origin=*&generator=search&gsrnamespace=6&gsrlimit=30&prop=imageinfo&iiprop=url|mime&iiurlwidth=300&gsrsearch=' + encodeURIComponent(q);
-    const d = await (await fetch(u)).json();
-    const pages = d.query && d.query.pages ? Object.values(d.query.pages) : [];
-    return pages.filter(p => p.imageinfo && p.imageinfo[0] && p.imageinfo[0].thumburl && /^image\//.test(p.imageinfo[0].mime)).sort((a, b) => a.index - b.index).slice(0, 24);
-  } catch (e) { return null; }
-}
-async function wikiImages(q) {
-  try {
-    const u = 'https://en.wikipedia.org/w/api.php?action=query&format=json&origin=*&generator=search&gsrlimit=8&prop=pageimages&piprop=thumbnail&pithumbsize=300&pilimit=8&gsrsearch=' + encodeURIComponent(q);
-    const d = await (await fetch(u)).json();
-    const pages = d.query && d.query.pages ? Object.values(d.query.pages) : [];
-    return pages.filter(p => p.thumbnail).sort((a, b) => a.index - b.index).slice(0, 4);
-  } catch (e) { return []; }
-}
-async function freeImage(q, rid) {
-  const out = $('out');
-  out.innerHTML = '<p class="msg">Improving your description…</p>';
-  let better = q, skip = '';
-  if (imgCache.q === q && imgCache.better) better = imgCache.better; else try {
-    const j = await callText({ contents: [{ parts: [{ text: 'Rewrite this image idea as one detailed English prompt for an AI image generator, under 60 words. Replace feelings and actions with concrete visible details (for example, crying becomes tears running down the face, wet eyes, a sad expression). Keep the main subject exactly as the person meant it, and add a style such as realistic photo if none is given. Reply with only the prompt. Idea: ' + q }] }] });
-    const c = j.candidates && j.candidates[0];
-    const t = c && c.content && c.content.parts ? c.content.parts.map(p => p.text || '').join('').trim() : '';
-    if (t) { better = t.slice(0, 500); imgCache = { q, better }; } else skip = 'Gemini sent back nothing';
-  } catch (e) {
-    skip = /quota/i.test(e.message) ? 'your free Gemini limit for today is used up' : /high demand|overloaded/i.test(e.message) ? 'Gemini is busy' : e.message.slice(0, 120);
-  }
-  if (rid 
+    const u = 'https://commons.wikimedia.org/w/api.php?action=query&format=json&origin=*&generator=search&gsrnamespace=6&gsrlimit=30
